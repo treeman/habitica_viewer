@@ -1,6 +1,8 @@
 # HabiticaViewer
 
-**TODO: Add description**
+Command line interface for <https://habitica.com/>.
+
+Create config/config.secret.exs and fill in api keys.
 
 ## Installation
 
