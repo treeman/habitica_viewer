@@ -1,0 +1,2 @@
+defmodule HabiticaViewer do
+end
