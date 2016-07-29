@@ -4,6 +4,8 @@ Command line interface for <https://habitica.com/>.
 
 Create config/config.secret.exs and fill in api keys.
 
+API description: <https://habitica.com/apidoc/>
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
