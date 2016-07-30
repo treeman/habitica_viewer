@@ -23,5 +23,25 @@ defmodule Habitica do
     %{body: body, status_code: 200} = get("tasks/user")
     body |> parse_user_tasks
   end
+
+  def user_dailies() do
+    %{body: body, status_code: 200} = get("tasks/user?type=dailys")
+    body |> parse_user_tasks
+  end
+
+  def user_habits() do
+    %{body: body, status_code: 200} = get("tasks/user?type=habits")
+    body |> parse_user_tasks
+  end
+
+  def user_todos() do
+    %{body: body, status_code: 200} = get("tasks/user?type=todos")
+    body |> parse_user_tasks
+  end
+
+  def user_rewards() do
+    %{body: body, status_code: 200} = get("tasks/user?type=rewards")
+    body |> parse_user_tasks
+  end
 end
 
