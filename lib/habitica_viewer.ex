@@ -1,32 +1,50 @@
 defmodule HabiticaViewer do
-  import Habitica.Task
-  alias Habitica.Daily
+  import Habitica
 
-  def output_response() do
-    resp = Habitica.get("tasks/user")
-
-    {:ok, file} = File.open("tasks", [:write, :utf8])
-    IO.puts(file, resp.body)
+  def main(args) do
+    args |> parse_args |> run
   end
 
-  def run() do
-    # FIXME save response as a file while testing.
-    # FIXME create tests.
+  def parse_args(args) do
+    options = OptionParser.parse(args,
+      strict: [help: :boolean, conky: :boolean],
+      aliases: [h: :help])
 
-    {:ok, file} = File.open("tasks", [:read, :utf8])
-    body = IO.read(file, :all)
-
-    tasks = body
-           |> Poison.Parser.parse!()
-           |> tasks_from_json
-
-    for t <- tasks do
-      case t do
-        x -> dump(x)
-      end
+    IO.inspect(options)
+    case options do
+      {[help: true], _, _} -> :help
+      {_, ["help"], _} -> :help
+      {opts, ["dailies"], _} -> [:dailies, opts]
+      {opts, "habits", _} -> [:habits, opts]
+      {opts, "todos", _} -> [:todos, opts]
+      _ -> :help
     end
+  end
 
-    :ok
+  def run(:help) do
+    IO.puts """
+    Habitica viewer
+
+    Usage:
+      habitica_viewer todos [options]
+      habitica_viewer dailies [options]
+      habitica_viewer habits [options]
+      habitica_viewer (-h | --help)
+
+    Options:
+      -h --help     Display this message
+      --conky       Add format specifiers for conky display. Harr.
+    """
+  end
+
+  def run([:dailies, opts]) do
+    IO.puts("listing dailys")
+  end
+  def run([:todos, opts]) do
+    IO.puts("listing todos")
+  end
+  def run([:habits, opts]) do
+    IO.puts("listing habits")
   end
 end
 

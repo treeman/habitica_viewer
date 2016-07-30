@@ -7,6 +7,7 @@ defmodule HabiticaViewer.Mixfile do
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     escript: [main_module: HabiticaViewer],
      deps: deps()]
   end
 

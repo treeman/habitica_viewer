@@ -1,41 +1,20 @@
-# FIXME refactor. All is not tasks. Maybe consistently use from_json.
-defmodule Habitica.Task do
-  # FIXME proper attribute handling
-  defmodule Daily do
-    defstruct ([:attribute,
-                :completed?,
-                :checklist,
-                :due_today?,
-                :text])
-  end
+defmodule Habitica.Parser do
+  alias Habitica.Daily
+  alias Habitica.Habit
+  alias Habitica.Reward
+  alias Habitica.Todo
 
-  defmodule Habit do
-    defstruct ([:attribute,
-                :text])
-  end
+  def parse_user_tasks(body) do
+    json_body = Poison.Parser.parse!(body)
 
-  defmodule Reward do
-    defstruct ([:attribute,
-                :text,
-                :cost])
-  end
-
-  defmodule Todo do
-    defstruct ([:attribute,
-                :completed?,
-                :checklist,
-                :text])
-  end
-
-  def tasks_from_json(json) do
-    json["data"]
-    |> Enum.map(&from_json/1)
+    json_body["data"]
+    |> Enum.map(&task_from_json/1)
     |> Enum.filter(fn nil -> false
                       t -> !String.starts_with?(t.text, "#")
                    end)
   end
 
-  defp from_json(json_task) do
+  defp task_from_json(json_task) do
     from_json(json_task["type"], json_task)
   end
 
@@ -54,7 +33,7 @@ defmodule Habitica.Task do
         false
     end
 
-    daily = %Daily{
+    %Daily{
       attribute: attribute_from_json(json["attribute"]),
       completed?: json["completed"],
       due_today?: due_today?,
@@ -98,10 +77,5 @@ defmodule Habitica.Task do
   defp attribute_from_json("str"), do: :strength
   defp attribute_from_json("per"), do: :perception
   defp attribute_from_json("con"), do: :constitution
-
-  def dump(daily) do
-    #IO.puts(daily.text)
-    IO.inspect(daily)
-  end
 end
 

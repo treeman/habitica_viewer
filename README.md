@@ -6,6 +6,12 @@ Create config/config.secret.exs and fill in api keys.
 
 API description: <https://habitica.com/apidoc/>
 
+## Build
+
+```
+mix escript.build
+```
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
