@@ -1,9 +1,5 @@
 defmodule HabiticaViewer do
-  import Habitica
   alias Habitica.Daily
-  alias Habitica.Habit
-  alias Habitica.Reward
-  alias Habitica.Todo
 
   def main(args) do
     args |> parse_args |> run
@@ -15,7 +11,6 @@ defmodule HabiticaViewer do
                conky: :boolean],
       aliases: [h: :help])
 
-    IO.inspect(options)
     case options do
       {[help: true], _, _} -> :help
       {_, ["help"], _} -> :help
@@ -43,21 +38,26 @@ defmodule HabiticaViewer do
   end
 
   def run([:dailies, opts]) do
-    IO.inspect(opts)
-    IO.puts("listing dailys")
+    for x <- Habitica.user_dailies do
+      print x, opts
+    end
   end
   def run([:todos, opts]) do
-    IO.puts("listing todos")
+    for x <- Habitica.user_todos do
+      print x, opts
+    end
   end
   def run([:habits, opts]) do
-    IO.puts("listing habits")
+    for x <- Habitica.user_habits do
+      print x, opts
+    end
   end
 
   def print(task, opts \\ %{})
   def print(%Daily{} = daily, opts) do
     if Keyword.has_key?(opts, :conky) do
-      IO.write("${{voffset 8}}")
-      IO.write("${{color #{daily_color(daily)}}}")
+      IO.write("${voffset 8}")
+      IO.write("${color #{daily_color(daily)}}")
       IO.puts(daily.text)
     else
       due? = daily.due_today? and !daily.completed?
@@ -67,17 +67,18 @@ defmodule HabiticaViewer do
 
   def print(task, opts) do
     if Keyword.has_key?(opts, :conky) do
-      IO.write("${{voffset 8}}")
+      IO.write("${voffset 8}")
+      IO.write("${color #ebdbb2}")
       IO.puts(task.text)
     else
       IO.puts(task.text)
-    do
+    end
   end
 
   def daily_color(daily) do
     cond do
-      daily.completed? -> "#ECF0A5"
-      daily.due_today? -> "#FFFFFF"
+      daily.completed? -> "#F291E0"
+      daily.due_today? -> "#ebdbb2"
       true -> "#808080"
     end
   end

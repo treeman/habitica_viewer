@@ -11,13 +11,12 @@ defmodule Habitica do
       "x-api-user": Application.get_env(:habitica_viewer, :user_id),
       "x-api-key": Application.get_env(:habitica_viewer, :api_token)
     })
-    IO.inspect(res)
     res
   end
 
-  def process_response_body(body) do
-    IO.inspect(body)
-  end
+  #def process_response_body(body) do
+    #IO.inspect(body)
+  #end
 
   def user_tasks() do
     %{body: body, status_code: 200} = get("tasks/user")
